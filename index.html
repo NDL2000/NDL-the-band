@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script type='text/javascript'>
+//<![CDATA[
+var pictureSrc ="./assets/img/1f338.png"; //the location of the snowflakes 
+var pictureWidth = 15; //the width of the snowflakes
+var pictureHeight = 15; //the height of the snowflakes
+var numFlakes = 20; //the number of snowflakes
+var downSpeed = 0.01; //the falling speed of snowflakes (portion of screen per 100 ms)
+var lrFlakes = 10; //the speed that the snowflakes should swing from side to side
+
+
+if( typeof( numFlakes ) != 'number' || Math.round( numFlakes ) != numFlakes || numFlakes < 1 ) { numFlakes = 10; }
+
+//draw the snowflakes
+for( var x = 0; x < numFlakes; x++ ) {
+if( document.layers ) { //releave NS4 bug
+document.write('<layer id="snFlkDiv'+x+'"><imgsrc="'+pictureSrc+'" height="'+pictureHeight+'"width="'+pictureWidth+'" alt="*" border="0"></layer>');
+} else {
+document.write('<div style="position:absolute; z-index:9999;"id="snFlkDiv'+x+'"><img src="'+pictureSrc+'"height="'+pictureHeight+'" width="'+pictureWidth+'" alt="*"border="0"></div>');
+}
+}
+
+//calculate initial positions (in portions of browser window size)
+var xcoords = new Array(), ycoords = new Array(), snFlkTemp;
+for( var x = 0; x < numFlakes; x++ ) {
+xcoords[x] = ( x + 1 ) / ( numFlakes + 1 );
+do { snFlkTemp = Math.round( ( numFlakes - 1 ) * Math.random() );
+} while( typeof( ycoords[snFlkTemp] ) == 'number' );
+ycoords[snFlkTemp] = x / numFlakes;
+}
+
+//now animate
+function flakeFall() {
+if( !getRefToDivNest('snFlkDiv0') ) { return; }
+var scrWidth = 0, scrHeight = 0, scrollHeight = 0, scrollWidth = 0;
+//find screen settings for all variations. doing this every time allows for resizing and scrolling
+if( typeof( window.innerWidth ) == 'number' ) { scrWidth = window.innerWidth; scrHeight = window.innerHeight; } else {
+if( document.documentElement && (document.documentElement.clientWidth ||document.documentElement.clientHeight ) ) {
+scrWidth = document.documentElement.clientWidth; scrHeight = document.documentElement.clientHeight; } else {
+if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+scrWidth = document.body.clientWidth; scrHeight = document.body.clientHeight; } } }
+if( typeof( window.pageYOffset ) == 'number' ) { scrollHeight = pageYOffset; scrollWidth = pageXOffset; } else {
+if( document.body && ( document.body.scrollLeft ||document.body.scrollTop ) ) { scrollHeight = document.body.scrollTop;scrollWidth = document.body.scrollLeft; } else {
+if(document.documentElement && (document.documentElement.scrollLeft ||document.documentElement.scrollTop ) ) { scrollHeight =document.documentElement.scrollTop; scrollWidth =document.documentElement.scrollLeft; } }
+}
+//move the snowflakes to their new position
+for( var x = 0; x < numFlakes; x++ ) {
+if( ycoords[x] * scrHeight > scrHeight - pictureHeight ) { ycoords[x] = 0; }
+var divRef = getRefToDivNest('snFlkDiv'+x); if( !divRef ) { return; }
+if( divRef.style ) { divRef = divRef.style; } var oPix = document.childNodes ? 'px' : 0;
+divRef.top = ( Math.round( ycoords[x] * scrHeight ) + scrollHeight ) + oPix;
+divRef.left = ( Math.round( ( ( xcoords[x] * scrWidth ) - (pictureWidth / 2 ) ) + ( ( scrWidth / ( ( numFlakes + 1 ) * 4 ) ) * (Math.sin( lrFlakes * ycoords[x] ) - Math.sin( 3 * lrFlakes * ycoords[x]) ) ) ) + scrollWidth ) + oPix;
+ycoords[x] += downSpeed;
+}
+}
+
+//DHTML handlers
+function getRefToDivNest(divName) {
+if( document.layers ) { return document.layers[divName]; } //NS4
+if( document[divName] ) { return document[divName]; } //NS4 also
+if( document.getElementById ) { return document.getElementById(divName); } //DOM (IE5+, NS6+, Mozilla0.9+, Opera)
+if( document.all ) { return document.all[divName]; } //Proprietary DOM - IE4
+return false;
+}
+
+window.setInterval('flakeFall();',100);
+//]]>
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDL Tour</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/fonts/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <meta name="google-site-verification" content="M-vNqJlTRGWJ41RNqNiuL9ksQrAFt4y4h15XZXaqKRU">
+    <meta name="description" content="We have created a fictional band website. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div id="main">
+        <div id="header">
+            <div id="nav">
+                <ul id="nav">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#band">Band</a></li>
+                    <li><a href="#tour">Tour</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li>
+                        <a href="#">
+                            More
+                            <i class="nav-arrow-down ti-angle-down"></i>
+                        </a>
+                        <ul class="subnav">
+                            <li><a href="#">Merchandise</a></li>
+                            <li><a href="#">Extras</a></li>
+                            <li><a href="#">Media</a></li>
+                        </ul>
+                    </li>
+                </ul>   
+            </div>
+        <!-- Mobile menu button -->
+        <div id="mobile-menu" class="mobile-menu-btn">
+            <i class="menu-icon ti-menu"></i>
+        </div>
+
+        <!-- Search button -->
+        <div class="search-btn">
+            <i class="search-icon ti-search"></i>
+        </div>
+        
+
+        </div>
+
+        <div id="slider">
+            <div class="text-content">
+                <h2 class="text-heading">Tiger Remix 2021</h2>
+                <div class="text-description">Đại nhạc hội thực tế ảo lần đầu tiên tại Việt Nam.</div>
+            </div>
+        </div>
+
+        <div id="content">
+            <div id="band" class="content-section">
+                <h2 class="section-heading">HỘI NGỘ CA SĨ HÀNG ĐẦU VIỆT NAM</h2>
+                <p class="section-sub-heading">We love music</p>
+                <p class="about-text">
+                    Sự kiện âm nhạc được đông đảo khán giả mong đợi – TIGER REMIX 2021 – sẽ trở lại vào đêm giao thừa 31/12 và mang đến một trải nghiệm chưa từng có: Đại nhạc hội thực tế ảo lần đầu tiên tại Việt Nam.
+                    Với chủ đề “Khai Xuân Bứt Phá”, TIGER REMIX 2021 hứa hẹn sẽ kết nối hàng triệu khán giả Việt Nam cùng kết thúc năm 2020 và chào đón năm mới 2021. Sự kiện thực tế ảo này sẽ được phát đồng thời trên kênh Facebook và YouTube chính thức của Tiger Beer trong thời gian từ 22h đến giao thừa.   
+                    
+                    Không phải là một sự kiện live stream hay truyền hình trực tuyến, không gian âm nhạc của TIGER REMIX 2021 được xây dựng bằng kỹ xảo điện ảnh, công nghệ thực tế ảo tiên tiến bậc nhất với sân khấu 3D trong không gian đa chiều và các tiết mục trình diễn được kết hợp hiệu ứng ảo hoành tráng. Chắc chắn, TIGER REMIX 2021 sẽ mang lại cho người hâm mộ những trải nghiệm nghe nhìn mãn nhãn và chân thật như đang có mặt tại sự kiện trực tiếp. Khán giả có thể thưởng thức và tương tác với sự kiện tại bất cứ nơi đâu chỉ với một thiết bị di động có kết nối mạng.
+                </p>
+                <div class="row member-list">
+                    <div class="column column-third text-center">
+                        <p class="member-name">SƠN TÙNG MTP</p>
+                        <img src="./assets/img/sontung.jpg" alt="Name" class="member-img">
+                    </div>
+
+                    <div class="column column-third text-center">
+                        <p class="member-name">TÓC TIÊN</p>
+                        <img src="./assets/img/toctien.jpeg" alt="Name" class="member-img">
+                    </div>
+
+                    <div class="column column-third text-center">
+                        <p class="member-name">SOBIN HOÀNG SƠN</p>
+                        <img src="./assets/img/sobin.jpg" alt="Name" class="member-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour section -->
+            <div class="tour-section">
+                <div id="tour" class="content-section">
+                    <h2 class="section-heading text-white">TOUR DATES</h2>
+                    <p class="section-sub-heading text-white">Remember to book your tickets!</p>
+                    
+                    <!-- Tickets -->
+                    <ul class="ticket-list">
+                        <li>CGV <span class="sold-out">Sold out</span></li>
+                        <li>GALAXY <span class="sold-out">Sold out</span></li>
+                        <li>MegaGS <span class="quantity">3</span></li>
+                    </ul>
+
+                    <!-- Places -->
+                    <div class="row place-list">
+                        <div class="column column-third">
+                            <img src="./assets/img/place1.jpg" alt="New York" class="place-img">
+                            <div class="place-body">
+                                <h3 class="place-heading">Hà Nội</h3>   
+                                <p class="place-time">Fri 27 Nov 2021</p>
+                                <p class="place-descreption">Số lượng vé có hạn nhanh tay đặt mua.</p>
+                                <a href="#" class="place-buy-btn">Đặt mua</a>
+                            </div>
+                        </div>
+
+                        <div class="column column-third">
+                        <img src="./assets/img/place2.jpg" alt=" Paris" class="place-img">
+                            <div class="place-body">
+                                <h3 class="place-heading">Tp. Hồ Chí Minh</h3>   
+                                <p class="place-time">Sat 28 Nov 2021</p>
+                                <p class="place-descreption">Số lượng vé có hạn nhanh tay đặt mua.</p>
+                                <a href="#" class="place-buy-btn">Đặt mua</a>
+                            </div>
+                        </div>
+
+                        <div class="column column-third">
+                            <img src="./assets/img/place3.jpg" alt="San Francisco" class="place-img">
+                            <div class="place-body">
+                                <h3 class="place-heading">Đà Nẵng</h3>   
+                                <p class="place-time">Sun 29 Nov 2021</p>
+                                <p class="place-descreption">Số lượng vé có hạn nhanh tay đặt mua.</p>
+                                <a href="#" class="place-buy-btn">Đặt mua</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Begin Contact section -->
+            <div id="contact" class="content-section">
+                <h2 class="section-heading">CONTACT</h2>
+                <p class="section-sub-heading">Fan? Drop a note!</p>
+                <div class="row contact-content">
+                    <div class="column column-half contact-info">
+                        <p><i class="ti-location-pin">Chicago, US</i></p>
+                        <p><i class="ti-mobile">Phone: <a href="tel:+00 151515">+00 151515</a></i></p>
+                        <p><i class="ti-email">Email: <a href="mailto:mail@mail.com">mail@mail.com</a></i></p>
+                    </div>
+                    <div class="column column-half contact-form">
+                        <form action="">
+                            <div class="row">
+                                <div class="column column-half">
+                                    <input type="text" placeholder="Name" required name="" id="" class="form-control">
+                                </div>
+
+                                <div class="column column-half">
+                                    <input type="email" placeholder="Email" required name="" id="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="column column-full">
+                                    <input type="text" placeholder="Message" required name="" id="" class="form-control">
+                                </div>
+                            </div>
+                            <input type="submit" value="SEND" class="input-sub">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End Contact section -->
+            <div class="map-section">
+                <img src="./assets/img/map.jpg" alt="Map">
+            </div>
+        </div>
+
+        <div id="footer">
+            <div class="socials-list">
+                <a href=""><i class="ti-facebook"></i></a>
+                <a href=""><i class="ti-instagram"></i></a>
+                <a href=""><i class="ti-pinterest"></i></a>
+                <a href=""><i class="ti-twitter-alt"></i></a>
+                <a href=""><i class="ti-linkedin"></i></a>
+                <a href=""><i class="ti-youtube"></i></a>
+            </div>
+            <p class="copyright">Powered by <a href="https://www.w3schools.com/w3css/default.asp">w3.css</a></p>
+        </div>
+    </div>
+</body>
+</html>
