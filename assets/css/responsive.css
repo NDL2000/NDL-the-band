@@ -91,3 +91,17 @@
     #content .section-sub-heading {
         padding-left: 10%;
     }
+
+    #slider .text-heading {
+        font-weight: 500;
+        font-size: 25px;
+    }
+    
+    #slider .text-description {
+        font-size: 15px;
+        margin-top: 25px;
+    }
+
+    #slider .text-content {
+        bottom: 10px;
+    }

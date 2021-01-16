@@ -6,7 +6,7 @@
 
 html {
     scroll-behavior: smooth;
-    font-family: "Segoe UI",Arial,sans-serif;
+    font-family: "Arial",sans-serif;
 }
 /* 
 1. Vi tri
@@ -192,11 +192,11 @@ html {
 
 #slider .text-heading {
     font-weight: 500;
-    font-size: 24px;
+    font-size: 40px;
 }
 
 #slider .text-description {
-    font-size: 15px;
+    font-size: 20px;
     margin-top: 25px;
 }
 
@@ -236,7 +236,7 @@ html {
     line-height: 1.5;
     margin: 15px 0;
     text-align: justify;
-    font-family: "Lato", sans-serif;
+    font-family: "Arial", sans-serif;
 }
 
 #content .member-list {
@@ -245,7 +245,7 @@ html {
 
 #content .member-name {
     text-align: center;
-    font-size: 15px;
+    font-size: 22px;
     margin: 15px 0;
     line-height: 1.5;
 }
@@ -253,6 +253,7 @@ html {
 #content .member-img {
     margin-top: 15px;
     width: 154px;
+    height: 186px;
     border-radius: 4px;
 }
 
@@ -305,6 +306,7 @@ html {
 .place-img {
     width: 100%;
     display: block;
+    height: 190px;
 }
 
 .place-img:hover {
