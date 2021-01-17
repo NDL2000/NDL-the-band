@@ -272,5 +272,13 @@ window.setInterval('flakeFall();',100);
                 header.style.height = null;
             }
         }
+        menuItem.onclick = function(e) {
+        var isParentMenu = this.nextElementSibling && this.nextElementSibling.classList.contains('subnav');
+        if (isParentMenu) {
+            e.preventDefault();
+        } else {
+            header.style.height = null;
+        }
+    }
     </script>
 </html>
